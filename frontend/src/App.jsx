@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react'
-import { fetchTables, startGame, stopGame, loginUser, createBooking, rejectBooking, updateTransactionName } from './api'
+import { fetchTables, startGame, stopGame, loginUser, createBooking, rejectBooking, updateTransactionName, updatePaymentStatus } from './api'
 import './index.css'
 import CharacterGroup from './components/CharacterGroup'
 import AuthInteractionContext from './context/AuthInteractionContext'
@@ -1143,6 +1143,7 @@ function App() {
                       <th>Paid By</th>
                       <th>Time & Duration</th>
                       <th>Amount</th>
+                      <th>Payment</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -1199,6 +1200,35 @@ function App() {
                               <div style={{ fontSize: '0.75rem', opacity: 0.5 }}>{endTime.toLocaleDateString()}</div>
                             </td>
                             <td style={{ color: 'var(--primary)', fontWeight: 900, fontSize: '1.1rem' }}>₹{tx.amount}</td>
+                            <td>
+                              <select 
+                                value={tx.payment_status}
+                                onChange={async (e) => {
+                                  try {
+                                    await updatePaymentStatus(tx.id, e.target.value);
+                                    loadTransactions();
+                                  } catch (err) {
+                                    console.error("Failed to update payment status", err);
+                                  }
+                                }}
+                                style={{
+                                  background: tx.payment_status === 'PAID' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 71, 71, 0.1)',
+                                  color: tx.payment_status === 'PAID' ? 'var(--primary)' : '#ff4747',
+                                  border: `1px solid ${tx.payment_status === 'PAID' ? 'var(--primary)' : '#ff4747'}`,
+                                  borderRadius: '20px',
+                                  padding: '0.25rem 0.5rem',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 800,
+                                  cursor: 'pointer',
+                                  outline: 'none',
+                                  width: '100px',
+                                  textAlign: 'center'
+                                }}
+                              >
+                                <option value="UNPAID" style={{ background: '#0f172a', color: '#ff4747' }}>UNPAID</option>
+                                <option value="PAID" style={{ background: '#0f172a', color: 'var(--primary)' }}>PAID</option>
+                              </select>
+                            </td>
                             <td>
                               <button 
                                 onClick={() => handleDeleteTransaction(tx.id)} 

@@ -183,6 +183,16 @@ class TransactionViewSet(viewsets.ModelViewSet):
                 tx.save()
         return Response({'status': 'updated'})
 
+    @action(detail=True, methods=['patch'])
+    def update_payment(self, request, pk=None):
+        tx = self.get_object()
+        status = request.data.get('payment_status')
+        if status in ['PAID', 'UNPAID']:
+            tx.payment_status = status
+            tx.save()
+            return Response({'status': 'payment status updated'})
+        return Response({'error': 'Invalid status'}, status=400)
+
     @action(detail=False, methods=['get'])
     def stats(self, request):
         from django.db.models import Sum, Count

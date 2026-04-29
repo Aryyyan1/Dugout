@@ -51,6 +51,11 @@ class Transaction(models.Model):
     table = models.ForeignKey(ClubTable, on_delete=models.SET_NULL, null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     duration = models.IntegerField(default=0)
+    PAYMENT_CHOICES = (
+        ('PAID', 'Paid'),
+        ('UNPAID', 'Unpaid'),
+    )
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='UNPAID')
 
     def __str__(self):
         return f"Transaction: {self.amount} - {self.description}"

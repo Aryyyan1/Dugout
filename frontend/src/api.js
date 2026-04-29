@@ -24,6 +24,15 @@ export const updateTransactionName = async (transactionId, userName) => {
   return res.json();
 };
 
+export const updatePaymentStatus = async (transactionId, status) => {
+  const res = await fetch(`${API_BASE}/transactions/${transactionId}/update_payment/`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ payment_status: status }),
+  });
+  return res.json();
+};
+
 export const loginUser = async (username, password) => {
   const res = await fetch(`${API_BASE}/users/login/`, {
     method: 'POST',

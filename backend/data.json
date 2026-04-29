@@ -1,0 +1,801 @@
+[
+{
+  "model": "club.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$XOCCJvul6gemOEPSpcJG5o$4ztaSmQK4B3IxwcUfR8AHDJUqTrcce7Kygng92ZqOqg=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "manager",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-04-26T18:28:31.955Z",
+    "email": "manager@example.com",
+    "is_manager": true,
+    "is_approved": false,
+    "phone_number": null,
+    "is_looking_for_game": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$pc3tCbHko8oVk8MxuyEpJv$5Sg2KHR5XFwNU3DJJ3kY71LBzNYIluRHfVf6ik5bfOg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "member",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-26T18:28:32.215Z",
+    "email": "member@example.com",
+    "is_manager": false,
+    "is_approved": true,
+    "phone_number": null,
+    "is_looking_for_game": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$ZNLaL4eFP6wPxK4Ii0WnZO$iEa2sQIKlw9I+KBb3AQHHCn+L3nR3RZcwARPU0iBH5c=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Aryyan1",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-26T20:15:00.293Z",
+    "email": "aryan18suthar@icloud.com",
+    "is_manager": false,
+    "is_approved": true,
+    "phone_number": "7300002510",
+    "is_looking_for_game": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$n0PGoHwFO3YKMyfC456n05$8I8VnHSyTYWzgDQU4Cbs9yLqcHUe9Iq3jfctSTkpokM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Aksshat",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-04-28T07:24:23.236Z",
+    "email": "akshatshringi1dec@gmail.com",
+    "is_manager": false,
+    "is_approved": true,
+    "phone_number": "9587455289",
+    "is_looking_for_game": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "club.clubtable",
+  "pk": 6,
+  "fields": {
+    "name": "Royal",
+    "table_type": "SNOOKER",
+    "is_free": true,
+    "hourly_rate": "240.00",
+    "last_start_time": null
+  }
+},
+{
+  "model": "club.clubtable",
+  "pk": 7,
+  "fields": {
+    "name": "Legend",
+    "table_type": "SNOOKER",
+    "is_free": true,
+    "hourly_rate": "200.00",
+    "last_start_time": null
+  }
+},
+{
+  "model": "club.clubtable",
+  "pk": 8,
+  "fields": {
+    "name": "Pool 1",
+    "table_type": "POOL",
+    "is_free": true,
+    "hourly_rate": "180.00",
+    "last_start_time": null
+  }
+},
+{
+  "model": "club.clubtable",
+  "pk": 9,
+  "fields": {
+    "name": "Pool 2",
+    "table_type": "POOL",
+    "is_free": true,
+    "hourly_rate": "180.00",
+    "last_start_time": null
+  }
+},
+{
+  "model": "club.clubtable",
+  "pk": 10,
+  "fields": {
+    "name": "Pool 3",
+    "table_type": "POOL",
+    "is_free": true,
+    "hourly_rate": "180.00",
+    "last_start_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "table": 6,
+    "start_time": "2026-04-26T21:22:07.962Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-26T05:00:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "table": 6,
+    "start_time": "2026-04-26T03:05:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "table": 6,
+    "start_time": "2026-04-26T05:05:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 6,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T17:00:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 7,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-27T11:30:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 8,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T11:35:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 9,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-27T10:45:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 10,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T11:19:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 11,
+  "fields": {
+    "user": 3,
+    "table": 6,
+    "start_time": "2026-04-27T11:23:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 12,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T11:27:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 13,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T12:46:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 14,
+  "fields": {
+    "user": 3,
+    "table": 8,
+    "start_time": "2026-04-27T12:49:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 15,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-27T13:10:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 16,
+  "fields": {
+    "user": 2,
+    "table": 6,
+    "start_time": "2026-04-27T13:20:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 17,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-27T15:00:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 18,
+  "fields": {
+    "user": 2,
+    "table": 7,
+    "start_time": "2026-04-27T14:50:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 19,
+  "fields": {
+    "user": 2,
+    "table": 7,
+    "start_time": "2026-04-27T14:50:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 20,
+  "fields": {
+    "user": 2,
+    "table": 6,
+    "start_time": "2026-04-27T14:51:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 21,
+  "fields": {
+    "user": 2,
+    "table": 7,
+    "start_time": "2026-04-27T14:51:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 22,
+  "fields": {
+    "user": 2,
+    "table": 7,
+    "start_time": "2026-04-27T15:00:00Z",
+    "end_time": null,
+    "status": "CANCELLED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 23,
+  "fields": {
+    "user": 4,
+    "table": 8,
+    "start_time": "2026-04-28T09:16:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 24,
+  "fields": {
+    "user": 4,
+    "table": 6,
+    "start_time": "2026-04-28T07:32:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 25,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-29T05:00:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": "30-40 mins"
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 26,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-28T16:30:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": null
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 27,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-28T16:30:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": "More than 1 hr"
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 28,
+  "fields": {
+    "user": 3,
+    "table": 7,
+    "start_time": "2026-04-29T10:30:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": "30-40 mins"
+  }
+},
+{
+  "model": "club.booking",
+  "pk": 29,
+  "fields": {
+    "user": 3,
+    "table": 6,
+    "start_time": "2026-04-29T16:30:00Z",
+    "end_time": null,
+    "status": "APPROVED",
+    "is_active": true,
+    "total_amount": "0.00",
+    "estimated_time": "30-40 mins"
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 1,
+  "fields": {
+    "booking": null,
+    "amount": "250.00",
+    "description": "Initial payment for Table 1 by member",
+    "table": null,
+    "timestamp": "2026-04-26T18:43:35.500Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 5,
+  "fields": {
+    "booking": 2,
+    "amount": "240.00",
+    "description": "Payment for Royal by Aryyan1",
+    "table": 6,
+    "timestamp": "2026-04-26T21:24:42.590Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 12,
+  "fields": {
+    "booking": 7,
+    "amount": "200.00",
+    "description": "Payment for Legend by Aryyan1",
+    "table": 7,
+    "timestamp": "2026-04-27T10:38:11.122Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 13,
+  "fields": {
+    "booking": 8,
+    "amount": "180.00",
+    "description": "Payment for Pool 1 by Aryyan1",
+    "table": 8,
+    "timestamp": "2026-04-27T10:40:32.192Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 14,
+  "fields": {
+    "booking": 9,
+    "amount": "200.00",
+    "description": "Booking for Legend by Aryyan1 approved for 10:45 AM",
+    "table": 7,
+    "timestamp": "2026-04-27T10:43:16.815Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 16,
+  "fields": {
+    "booking": 10,
+    "amount": "0.00",
+    "description": "Reservation for Pool 1 by Aryyan1 approved for 11:19 AM",
+    "table": 8,
+    "timestamp": "2026-04-27T11:17:54.099Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 17,
+  "fields": {
+    "booking": 11,
+    "amount": "0.00",
+    "description": "Reservation for Royal by Aryyan1 approved for 11:23 AM",
+    "table": 6,
+    "timestamp": "2026-04-27T11:21:43.434Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 18,
+  "fields": {
+    "booking": 12,
+    "amount": "0.00",
+    "description": "Reservation for Pool 1 by Aryyan1 approved for 11:27 AM",
+    "table": 8,
+    "timestamp": "2026-04-27T11:25:44.948Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 20,
+  "fields": {
+    "booking": 13,
+    "amount": "0.00",
+    "description": "Reservation for Pool 1 by Aryyan1 approved for 12:46 PM",
+    "table": 8,
+    "timestamp": "2026-04-27T12:45:02.649Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 21,
+  "fields": {
+    "booking": 14,
+    "amount": "0.00",
+    "description": "Reservation for Pool 1 by Aryyan1 approved for 12:49 PM",
+    "table": 8,
+    "timestamp": "2026-04-27T12:46:30.700Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 23,
+  "fields": {
+    "booking": 15,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 01:10 PM",
+    "table": 7,
+    "timestamp": "2026-04-27T13:06:17.964Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 24,
+  "fields": {
+    "booking": 16,
+    "amount": "0.00",
+    "description": "Reservation for Royal by member approved for 01:20 PM",
+    "table": 6,
+    "timestamp": "2026-04-27T13:13:42.187Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 28,
+  "fields": {
+    "booking": 17,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 03:00 PM",
+    "table": 7,
+    "timestamp": "2026-04-27T13:56:19.443Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 30,
+  "fields": {
+    "booking": 19,
+    "amount": "0.00",
+    "description": "Reservation for Legend by member approved for 02:50 PM",
+    "table": 7,
+    "timestamp": "2026-04-27T14:48:28.008Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 35,
+  "fields": {
+    "booking": null,
+    "amount": "0.09",
+    "description": "Final game session on Royal for 1 seconds",
+    "table": 6,
+    "timestamp": "2026-04-28T09:37:30.703Z",
+    "duration": 1
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 36,
+  "fields": {
+    "booking": null,
+    "amount": "0.08",
+    "description": "Final game session on Legend for 1 seconds",
+    "table": 7,
+    "timestamp": "2026-04-28T09:37:34.486Z",
+    "duration": 1
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 37,
+  "fields": {
+    "booking": null,
+    "amount": "0.13",
+    "description": "Final game session on Royal for 1 seconds",
+    "table": 6,
+    "timestamp": "2026-04-28T09:37:40.767Z",
+    "duration": 1
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 50,
+  "fields": {
+    "booking": 25,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 05:00 AM",
+    "table": 7,
+    "timestamp": "2026-04-28T16:04:31.395Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 51,
+  "fields": {
+    "booking": 26,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 04:30 PM",
+    "table": 7,
+    "timestamp": "2026-04-28T16:15:22.419Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 52,
+  "fields": {
+    "booking": 27,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 04:30 PM",
+    "table": 7,
+    "timestamp": "2026-04-28T16:18:34.397Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 53,
+  "fields": {
+    "booking": 28,
+    "amount": "0.00",
+    "description": "Reservation for Legend by Aryyan1 approved for 10:30 AM",
+    "table": 7,
+    "timestamp": "2026-04-29T10:11:20.301Z",
+    "duration": 0
+  }
+},
+{
+  "model": "club.transaction",
+  "pk": 55,
+  "fields": {
+    "booking": 29,
+    "amount": "0.00",
+    "description": "Reservation for Royal by Aryyan1 approved for 04:30 PM",
+    "table": 6,
+    "timestamp": "2026-04-29T11:52:35.639Z",
+    "duration": 0
+  }
+}
+]
