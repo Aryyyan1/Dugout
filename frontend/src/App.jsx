@@ -21,8 +21,14 @@ function App() {
   const [bookingModal, setBookingModal] = useState({ open: false, table: null, date: '', time: '', estimatedTime: '30-40 mins', success: false })
   const [gameResultModal, setGameResultModal] = useState({ open: false, data: null, userName: '' })
   const [myBookings, setMyBookings] = useState([])
-  const [notifications, setNotifications] = useState([])
+  const [notifications, setNotifications] = useState(() => {
+    const savedUser = localStorage.getItem('dugout_user')
+    if (!savedUser) return []
+    const saved = localStorage.getItem(`dugout_notifications_${JSON.parse(savedUser).id}`)
+    return saved ? JSON.parse(saved) : []
+  })
   const [showNotifs, setShowNotifs] = useState(false)
+  const [hasUnread, setHasUnread] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
   const [tick, setTick] = useState(0)
   const [alertedIds, setAlertedIds] = useState(new Set())
@@ -35,7 +41,6 @@ function App() {
   const [stats, setStats] = useState({ today_revenue: 0, month_revenue: 0, daily_stats: [], tables_perf: [] })
   const [announcements, setAnnouncements] = useState([])
   const [newAnn, setNewAnn] = useState({ title: '', content: '', ann_type: 'NEWS' })
-  const [hasUnread, setHasUnread] = useState(false)
   const [historyFilterTab, setHistoryFilterTab] = useState('All tables')
   const [profileMenuOpen, setProfileMenuOpen] = useState(false)
   const prevMyBookings = useRef([])
@@ -88,22 +93,49 @@ function App() {
 
   // Notification Engine for Bookings & Announcements
   useEffect(() => {
-    // 1. Check for Booking Status Changes
-    if (prevMyBookings.current.length > 0 && myBookings.length > 0) {
-      myBookings.forEach(newB => {
-        const oldB = prevMyBookings.current.find(o => o.id === newB.id)
-        if (oldB && oldB.status !== newB.status) {
-          let msg = `Booking for ${newB.table_name} is now ${newB.status}!`
-          if (newB.status === 'CANCELLED') {
-            msg = `Unfortunately, your request for ${newB.table_name} was rejected by the manager.`
+    if (!user) return;
+
+    // 1. Check for Booking Status Changes (using persistence to avoid duplicates)
+    if (myBookings.length > 0) {
+      const notifiedKey = `notified_ids_${user.id}`
+      const notifiedIds = JSON.parse(localStorage.getItem(notifiedKey) || '[]')
+      let newNotifiedIds = [...notifiedIds]
+      let foundNew = false
+
+      myBookings.forEach(b => {
+        const uniqueKey = `${b.id}_${b.status}`
+        if ((b.status === 'APPROVED' || b.status === 'CANCELLED') && !notifiedIds.includes(uniqueKey)) {
+          let msg = `Booking for ${b.table_name} is now ${b.status}!`
+          if (b.status === 'CANCELLED') {
+            msg = `Unfortunately, your request for ${b.table_name} was rejected by the manager.`
           }
-          const newNotif = { id: Date.now(), msg, time: new Date(), type: newB.status === 'CANCELLED' ? 'error' : 'success' }
-          setNotifications(prev => [newNotif, ...prev])
+          
+          const newNotif = { 
+            id: Date.now() + Math.random(), 
+            msg, 
+            time: new Date(), 
+            type: b.status === 'CANCELLED' ? 'error' : 'success',
+            bookingId: b.id
+          }
+          
+          setNotifications(prev => {
+            const updated = [newNotif, ...prev].slice(0, 20) // Keep last 20
+            localStorage.setItem(`dugout_notifications_${user.id}`, JSON.stringify(updated))
+            return updated
+          })
+          
           setHasUnread(true)
-          setToast({ msg, type: newB.status === 'APPROVED' ? 'success' : 'error' })
+          setToast({ msg, type: b.status === 'APPROVED' ? 'success' : 'error' })
           setTimeout(() => setToast(null), 6000)
+          
+          newNotifiedIds.push(uniqueKey)
+          foundNew = true
         }
       })
+
+      if (foundNew) {
+        localStorage.setItem(notifiedKey, JSON.stringify(newNotifiedIds))
+      }
     }
     prevMyBookings.current = myBookings
 
@@ -112,7 +144,13 @@ function App() {
       const latest = announcements[0] 
       const msg = `📢 NEW ${latest.ann_type}: ${latest.title}`
       const newNotif = { id: Date.now(), msg, time: new Date(), type: 'info' }
-      setNotifications(prev => [newNotif, ...prev])
+      
+      setNotifications(prev => {
+        const updated = [newNotif, ...prev].slice(0, 20)
+        localStorage.setItem(`dugout_notifications_${user.id}`, JSON.stringify(updated))
+        return updated
+      })
+      
       setHasUnread(true)
       setToast({ msg: `New Club Notice: ${latest.title}`, type: 'success' })
       setTimeout(() => setToast(null), 5000)
@@ -122,7 +160,16 @@ function App() {
       isFirstLoad.current = false
     }
     prevAnnouncements.current = announcements
-  }, [myBookings, announcements])
+  }, [myBookings, announcements, user])
+
+  // Load persisted notifications on login
+  useEffect(() => {
+    if (user) {
+      const saved = localStorage.getItem(`dugout_notifications_${user.id}`)
+      if (saved) setNotifications(JSON.parse(saved))
+      else setNotifications([])
+    }
+  }, [user])
 
   const loadTables = async () => {
     try {
@@ -137,18 +184,21 @@ function App() {
     try {
       const res = await fetch(`http://localhost:8000/api/bookings/`)
       const data = await res.json()
-      const today = new Date().toISOString().split('T')[0]
+      const now = new Date()
+      const today = now.toISOString().split('T')[0]
       
       const current = data.filter(b => {
         const isUser = b.user === user.id
-        const isToday = b.start_time.startsWith(today)
-        return isUser && isToday
+        const startTime = new Date(b.start_time)
+        const oneHourAfter = new Date(startTime.getTime() + 60 * 60 * 1000)
+        
+        // Show if it's the user's booking AND (it's in the future OR it's less than 1 hour old)
+        return isUser && oneHourAfter > now
       }).reverse()
       
       setMyBookings(current)
       
       // Also load ALL approved bookings for the club schedule
-      const now = new Date()
       const todayDate = now.toLocaleDateString('en-CA')
 
       setApprovedBookings(data.filter(b => 
@@ -434,6 +484,18 @@ function App() {
     try {
       // Create a date object in local time and convert to ISO for backend consistency
       const localDateTime = new Date(`${bookingModal.date}T${bookingModal.time}`)
+      
+      // Check if the selected time is in the past
+      if (localDateTime < new Date()) {
+        setLoading(false);
+        return setErrorModal({ 
+          show: true, 
+          message: "You cannot schedule a booking for a time that has already passed. Please select a future time.", 
+          title: "Invalid Time", 
+          type: "error" 
+        });
+      }
+
       const dateTime = localDateTime.toISOString()
       const response = await fetch('http://localhost:8000/api/bookings/', {
         method: 'POST',
@@ -1594,7 +1656,10 @@ function App() {
           </div>
           {notifications.length > 0 && (
             <button 
-              onClick={() => setNotifications([])} 
+              onClick={() => {
+                setNotifications([]);
+                localStorage.setItem(`dugout_notifications_${user.id}`, JSON.stringify([]));
+              }} 
               style={{ width: '100%', marginTop: '1rem', padding: '0.5rem', background: 'rgba(255,255,255,0.05)', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '0.8rem' }}
             >
               Clear All

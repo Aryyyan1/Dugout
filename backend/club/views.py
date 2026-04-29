@@ -107,8 +107,14 @@ class BookingViewSet(viewsets.ModelViewSet):
         if table_id and start_time_str:
             from datetime import timedelta
             from django.utils.dateparse import parse_datetime
+            from django.utils import timezone
             start_time = parse_datetime(start_time_str)
             if start_time:
+                if start_time < timezone.now():
+                    return Response(
+                        {'error': 'Cannot schedule a booking for a time that has already passed.'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 conflicts = Booking.objects.filter(
                     table_id=table_id,
                     status='APPROVED',
