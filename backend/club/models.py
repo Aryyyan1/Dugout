@@ -26,6 +26,9 @@ class ClubTable(models.Model):
     def __str__(self):
         return f"{self.name} - {self.table_type} ({'Free' if self.is_free else 'Busy'})"
 
+    class Meta:
+        ordering = ['id']
+
 class Booking(models.Model):
     STATUS_CHOICES = (
         ('PENDING', 'Pending'),

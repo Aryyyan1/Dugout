@@ -1,0 +1,37 @@
+# THE DUGOUT - Premium Snooker Club Management System
+
+## Project Overview
+"The Dugout" is a comprehensive, full-stack management solution designed for premium snooker and pool clubs. It streamlines the entire operational workflow—from real-time table tracking and automated billing to advanced member reservation management. The system features a high-end, cinematic dark-themed user interface built with modern web technologies.
+
+## Technical Stack
+- **Frontend**: React.js with Vite, Vanilla CSS (Glassmorphism design), React Context API.
+- **Backend**: Django REST Framework (Python), PostgreSQL Database.
+- **Environment**: Environment variable management (.env), Git version control.
+- **Architecture**: RESTful API with real-time polling for state synchronization.
+
+## Key Features
+
+### For Members:
+- **Interactive Arena**: Real-time view of all club tables (Snooker & Pool) with live status (FREE/BUSY).
+- **Smart Reservations**: Choose a table, date, and time. System prevents double-booking and historical bookings.
+- **Persistent Notifications**: Real-time alerts for booking approvals, rejections, or club announcements that persist across sessions.
+- **My Schedule**: Automated dashboard to track upcoming games. Records automatically clear 1 hour after the scheduled time for a clean view.
+- **Notice Board**: Stay updated with club rules, tournaments, and news.
+
+### For Managers:
+- **Live Control Panel**: Start and stop games with a single click. Automated duration tracking and revenue calculation.
+- **Reservation Approval Workflow**: Review, approve, or reject member requests in real-time.
+- **Game History & Finance**: Complete log of every game session with details like table name, user, duration, and amount.
+- **Payment Status Tracking**: Mark games as "PAID" or "UNPAID" to ensure no revenue is missed.
+- **Member Management**: Approve new member registrations and manage the club community.
+- **Analytics Dashboard**: Real-time stats showing today's revenue, monthly growth, and table-wise performance.
+
+
+## Future Scope
+- Integration of digital payment gateways (Razorpay/Stripe).
+- Automated Email/SMS notifications for members.
+- Staff role management for larger clubs.
+- Inventory management for club refreshments and accessories.
+
+---
+Developed with precision for a premium club experience.

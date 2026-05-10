@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
 import { fetchTables, startGame, stopGame, loginUser, createBooking, rejectBooking, updateTransactionName, updatePaymentStatus } from './api'
 import './index.css'
 import CharacterGroup from './components/CharacterGroup'
@@ -18,6 +19,90 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ username: '', password: '', email: '', phone: '' })
   const { interactionState, setInteractionState } = useContext(AuthInteractionContext)
+  
+  const canvasRef = useRef(null)
+  const [images, setImages] = useState([])
+  const { scrollYProgress } = useScroll()
+  
+  const smoothScrollProgress = useSpring(scrollYProgress, {
+    stiffness: 1000,
+    damping: 100,
+    mass: 0.1,
+    restDelta: 0.0001
+  })
+
+  // Pre-load all 240 frames for "Flawless" performance
+  useEffect(() => {
+    const loadedImages = []
+    const frameCount = 240
+    let loadedCount = 0
+
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image()
+      const frameIndex = i.toString().padStart(3, '0')
+      img.src = `/ezgif-frame-${frameIndex}.jpg`
+      img.onload = () => {
+        loadedCount++
+        if (loadedCount === frameCount) {
+          setImages(loadedImages)
+        }
+      }
+      loadedImages.push(img)
+    }
+  }, [])
+
+  // Flawless Canvas Render Loop
+  useEffect(() => {
+    if (!canvasRef.current || images.length < 240) return
+    let rafId;
+    
+    const renderCanvas = () => {
+      const canvas = canvasRef.current
+      const context = canvas.getContext('2d')
+      
+      // Calculate which frame to show
+      const frameCount = 240
+      const index = Math.min(
+        frameCount - 1,
+        Math.floor(smoothScrollProgress.get() * frameCount)
+      )
+
+      if (images[index]) {
+        // Handle Canvas Sizing (Fill container)
+        const img = images[index]
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight * 1.5 // Account for parallax height
+        
+        // Draw image with "Object Fit: Cover" logic
+        const imgRatio = img.width / img.height
+        const canvasRatio = canvas.width / canvas.height
+        let dWidth, dHeight, dx, dy
+
+        if (imgRatio > canvasRatio) {
+          dHeight = canvas.height
+          dWidth = dHeight * imgRatio
+          dx = (canvas.width - dWidth) / 2
+          dy = 0
+        } else {
+          dWidth = canvas.width
+          dHeight = dWidth / imgRatio
+          dx = 0
+          dy = (canvas.height - dHeight) / 2
+        }
+
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(img, dx, dy, dWidth, dHeight)
+      }
+      
+      rafId = requestAnimationFrame(renderCanvas)
+    }
+
+    rafId = requestAnimationFrame(renderCanvas)
+    return () => cancelAnimationFrame(rafId)
+  }, [images, smoothScrollProgress])
+
+  const y = useTransform(smoothScrollProgress, [0, 1], [0, -200])
+
   const [bookingModal, setBookingModal] = useState({ open: false, table: null, date: '', time: '', estimatedTime: '30-40 mins', success: false })
   const [gameResultModal, setGameResultModal] = useState({ open: false, data: null, userName: '' })
   const [myBookings, setMyBookings] = useState([])
@@ -174,7 +259,8 @@ function App() {
   const loadTables = async () => {
     try {
       const data = await fetchTables()
-      setTables(data)
+      // Sort tables by ID to maintain consistent UI order when status updates
+      setTables(data.sort((a, b) => a.id - b.id))
     } catch (err) {
       console.error("Failed to load tables", err)
     }
@@ -752,17 +838,17 @@ function App() {
         </div>
 
         {/* Right Side: Form */}
-        <div className="auth-form-container" style={{ padding: '3rem' }}>
-          <h2 style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
-            {isRegistering ? 'Join' : 'Login to'} <span className="gradient-text">Dugout</span>
+        <div className="auth-form-container" style={{ padding: '3.5rem' }}>
+          <h2 style={{ marginBottom: '2rem', textAlign: 'center', fontSize: '2.5rem' }}>
+            {isRegistering ? 'Join' : 'Login to'} <span className="brand-serif">Dugout</span>
           </h2>
           <form onSubmit={isRegistering ? handleRegister : handleLogin}>
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '1rem', fontWeight: '600', color: '#fff' }}>Username</label>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Username</label>
               <input 
                 type="text" 
                 className="glass-card" 
-                style={{ width: '100%', padding: '0.9rem', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', fontSize: '1rem', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}
+                style={{ width: '100%', padding: '1rem', background: 'rgba(212, 198, 185, 0.05)', borderRadius: '16px', fontSize: '1rem', color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}
                 value={formData.username}
                 onChange={(e) => {
                   setFormData({...formData, username: e.target.value});
@@ -774,12 +860,12 @@ function App() {
               />
             </div>
             {isRegistering && (
-              <div style={{ marginBottom: '1.25rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '1rem', fontWeight: '600', color: '#fff' }}>Email</label>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Email</label>
                 <input 
                   type="email" 
                   className="glass-card" 
-                  style={{ width: '100%', padding: '0.9rem', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', fontSize: '1rem', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ width: '100%', padding: '1rem', background: 'rgba(212, 198, 185, 0.05)', borderRadius: '16px', fontSize: '1rem', color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}
                   value={formData.email}
                   onChange={(e) => {
                     setFormData({...formData, email: e.target.value});
@@ -791,12 +877,12 @@ function App() {
                 />
               </div>
             )}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '1rem', fontWeight: '600', color: '#fff' }}>Password</label>
+            <div style={{ marginBottom: '1.5rem' }}>
+              <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Password</label>
               <input 
                 type="password" 
                 className="glass-card" 
-                style={{ width: '100%', padding: '0.9rem', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', fontSize: '1rem', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}
+                style={{ width: '100%', padding: '1rem', background: 'rgba(212, 198, 185, 0.05)', borderRadius: '16px', fontSize: '1rem', color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}
                 value={formData.password}
                 onChange={(e) => {
                   setFormData({...formData, password: e.target.value});
@@ -808,12 +894,12 @@ function App() {
               />
             </div>
             {isRegistering && (
-              <div style={{ marginBottom: '1.75rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '1rem', fontWeight: '600', color: '#fff' }}>Phone Number</label>
+              <div style={{ marginBottom: '2rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem', fontWeight: '800', color: 'var(--text-main)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Phone Number</label>
                 <input 
                   type="text" 
                   className="glass-card" 
-                  style={{ width: '100%', padding: '0.9rem', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', fontSize: '1rem', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}
+                  style={{ width: '100%', padding: '1rem', background: 'rgba(212, 198, 185, 0.05)', borderRadius: '16px', fontSize: '1rem', color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}
                   value={formData.phone}
                   onChange={(e) => {
                     const val = e.target.value.replace(/[^0-9]/g, '').substring(0, 10);
@@ -841,12 +927,12 @@ function App() {
             <button 
               type="submit" 
               className="btn btn-primary" 
-              style={{ width: '100%', justifyContent: 'center', padding: '1rem', fontSize: '1.1rem' }} 
+              style={{ width: '100%', justifyContent: 'center', padding: '1.2rem', fontSize: '1.1rem', marginTop: '1rem' }} 
               disabled={loading}
               onMouseEnter={() => setInteractionState('button_hover')}
               onMouseLeave={() => setInteractionState('idle')}
             >
-              {loading ? 'Processing...' : (isRegistering ? 'Create Account' : 'Sign In')}
+              {loading ? 'Processing...' : (isRegistering ? 'CREATE ACCOUNT' : 'SIGN IN')}
             </button>
           </form>
           <p style={{ marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)', textAlign: 'center' }}>
@@ -1585,7 +1671,18 @@ function App() {
 
   return (
     <div className="App">
-      <nav>
+      <motion.div 
+        className="video-bg-container"
+        style={{ y }}
+      >
+        <canvas 
+          ref={canvasRef}
+          style={{ width: '100%', height: '100%', display: 'block' }}
+        />
+        <div className="video-overlay"></div>
+      </motion.div>
+
+      <nav className="navbar glass">
         <div className="logo" onClick={() => setView('home')} style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
           <img src="/logo.jpg" alt="Dugout Logo" style={{ height: '50px', borderRadius: '8px' }} />
           <span style={{ fontSize: '1.4rem', fontWeight: 800, letterSpacing: '0.05em', color: 'var(--accent)' }}>THE DUGOUT</span>
